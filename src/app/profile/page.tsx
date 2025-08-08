@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Droplet, Calendar, Award, Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 
 const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -25,6 +25,12 @@ export default function ProfilePage() {
         avatarUrl: 'https://placehold.co/100x100'
     });
     
+    const [formattedDate, setFormattedDate] = useState('');
+
+    useEffect(() => {
+        setFormattedDate(new Date(userData.lastDonation).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }));
+    }, [userData.lastDonation]);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         setUserData(prev => ({...prev, [id]: value}));
@@ -93,7 +99,7 @@ export default function ProfilePage() {
                             <div className="flex items-center text-lg">
                                 <Calendar className="mr-3 h-5 w-5 text-primary" />
                                 <span className="font-semibold mr-2">Last Donation:</span>
-                                <span>{new Date(userData.lastDonation).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                <span>{formattedDate}</span>
                             </div>
                              <div className="flex items-center text-lg">
                                 <Award className="mr-3 h-5 w-5 text-primary" />
